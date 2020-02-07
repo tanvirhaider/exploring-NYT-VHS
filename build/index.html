@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VHS player</title>
+    <script src="https://static01.nyt.com/video-static/vhs3/vhs.min.js"></script>
+
+</head>
+<body>
+
+    <div id="vid-container"></div>
+
+
+    <script>
+        var vidPlayer = document.getElementById("vid-container");
+        var cuePoint = 30;
+
+        var player = VHS({
+            id: 100000006877847,
+            container: vidPlayer,
+           // width: '100%',
+          //  height: '100%',
+            type: 'player-test',
+        });
+
+        player.on(player.events.READY, () => {
+        // `player` ready to be used
+        console.log("player is ready for ...");
+        player.setVolume(0.1);
+
+        var yoMTV = VHS.getPlayerByContainer(vidPlayer);
+        console.log(yoMTV);
+
+        });
+
+        player.on( player.events.AD_FIRST_QUARTILE, () => {
+                console.log( " Q1 ");
+        })
+
+        player.on(player.events.TIME_UPDATE, function curPointHandler(currentTime){
+            if (Math.round(currentTime) >= cuePoint) {
+                console.log("Trigger Cue");
+                player.removeListener(player.events.TIME_UPDATE, curPointHandler)
+            }
+        });
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
