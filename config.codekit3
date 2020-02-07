@@ -9,6 +9,16 @@
 	],
 "creatorBuild": "28905",
 "files": {
+	"/app/can-autoplay.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 0,
+		"oA": 2,
+		"oAP": "/build/can-autoplay.js",
+		"oF": 3,
+		"sC": 3,
+		"tS": 0
+		},
 	"/app/index.html": {
 		"cB": 0,
 		"ft": 8192,

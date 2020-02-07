@@ -5,33 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VHS player</title>
     <script src="https://static01.nyt.com/video-static/vhs3/vhs.min.js"></script>
+    <script src="can-autoplay.js"></script>
 
 </head>
 <body>
+
+    <style>
+        #vid-container {
+            position: absolute;
+            width: 640px;
+            height: 320px;
+        }
+
+        .vhs-icon-cc-off, .vhs-icon-cc-on {
+            display: none;
+        }
+
+
+    </style>
 
     <div id="vid-container"></div>
 
 
     <script>
+
+   
+
+
+
+
         var vidPlayer = document.getElementById("vid-container");
         var cuePoint = 30;
 
         var player = VHS({
             id: 100000006877847,
             container: vidPlayer,
+            autoplay: false,
+            posterUrl: "https://cdn1.thr.com/sites/default/files/imagecache/768x433/2019/11/vikings_-season_6-_publicity_still_-_h_2019_.jpg",
+            controls: true,
+            captionsDefaultOn: false,
+            //ratio: "1:1",
+            ads: false,
+            muted: true,
+            width: "640px",
+            //width: '100%',
+            //height: '100%',
+            preload: "auto",
+            duration: 30000,
+            userInitiatedNext: true,
+            playNext: false,
+            buffering: false,
+            controls: {
+                fullscreen: false,
+                hd: false,
+            },
+           // env: "test",
            // width: '100%',
           //  height: '100%',
             type: 'player-test',
+            pauseOtherPlayers: false,
+            comscore: false,
+            tagx: false,
+            endSlate: {
+                hasRecommendation: false, // Show/hide recommendations
+                autoplayNext: false // Enable/disable autoplay next
+            },
+            sharetools: false,
+            debug: true,
+            ads: false,
+            
         });
 
+        /*
         player.on(player.events.READY, () => {
-        // `player` ready to be used
-        console.log("player is ready for ...");
-        player.setVolume(0.1);
+            // `player` ready to be used
+            console.log("player is ready for ...");
+            player.setVolume(0.1);
 
-        var yoMTV = VHS.getPlayerByContainer(vidPlayer);
-        console.log(yoMTV);
+            var yoMTV = VHS.getPlayerByContainer(vidPlayer);
+            console.log(yoMTV);
 
+        });
+        */
+
+        //player.emit('plugin:sharetools:facebook');
+        //player.emit('plugin:sharetools:twitter');
+
+        player.plugin({ tanvir: customPluginByTanvir });
+
+        function customPluginByTanvir(player) {
+        //player.on(player.events.PLAY, () => alert('Media started playing...'))
+        }
+
+
+        player.on(player.events.READY, () => {
+            player.on(player.events.PLAYING, () => {
+                console.log('playing');
+            });
+
+            player.on(player.events.ENDED, () => {
+                console.log('ended - rewind');
+                //player.seek(0);
+            });
+
+           // player.play();
+
+            // canAutoplay.video().then(({result}) => {
+            //     if (result === true) {
+            //         console.log("autoplay");
+            //     } else {
+            //         console.log("can not autoplay");
+            //     }
+            // })
         });
 
         player.on( player.events.AD_FIRST_QUARTILE, () => {
@@ -43,6 +128,13 @@
                 console.log("Trigger Cue");
                 player.removeListener(player.events.TIME_UPDATE, curPointHandler)
             }
+        });
+
+        player.on(player.events.ENDED, () => {
+            console.log('ended - rewind');
+            //player.seek(0);
+           // player.destroy();
+           // player.load(100000006877847,false);
         });
 
 
